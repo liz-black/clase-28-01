@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicios de Recursión</title>
+  <style>
+    /* General */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f3e6ff;
+      color: #4b0082;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #800080;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    /* Inputs */
+    input[type="number"],
+    input[type="text"] {
+      padding: 8px;
+      border: 2px solid #d1a3ff;
+      border-radius: 8px;
+      width: 200px;
+      margin: 5px 0;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input[type="number"]:focus,
+    input[type="text"]:focus {
+      border-color: #800080;
+      box-shadow: 0 0 8px #d1a3ff;
+    }
+
+    /* Botones */
+    button {
+      padding: 10px 20px;
+      background-color: #800080;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background-color: #a64ca6;
+    }
+
+    /* Resultados */
+    p[id^="resultado"] {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #4b0082;
+      padding: 8px;
+      border-radius: 8px;
+      background-color: #e0c6ff;
+      display: inline-block;
+      min-width: 200px;
+    }
+
+    /* Separadores */
+    hr {
+      margin: 25px 0;
+      border: 1px solid #d1a3ff;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Ejercicios de Recursión 💜</h2>
+
+<!-- Ejercicio 1: Potencia -->
+<p>Ejercicio 1: Calcular base^exponente</p>
+Base: <input type="number" id="base"><br>
+Exponente: <input type="number" id="exp"><br>
+<button onclick="calcularPotencia()">Calcular Potencia</button>
+<p id="resultadoPotencia"></p>
+<hr>
+
+<!-- Ejercicio 2: MCD -->
+<p>Ejercicio 2: Calcular MCD</p>
+Número 1: <input type="number" id="num1"><br>
+Número 2: <input type="number" id="num2"><br>
+<button onclick="calcularMCD()">Calcular MCD</button>
+<p id="resultadoMCD"></p>
+<hr>
+
+<!-- Ejercicio 3: Suma de un arreglo -->
+<p>Ejercicio 3: Sumar arreglo</p>
+Arreglo (separar por comas): <input type="text" id="arreglo"><br>
+<button onclick="calcularSumaArreglo()">Sumar Arreglo</button>
+<p id="resultadoArreglo"></p>
+<hr>
+
+<!-- Ejercicio 4: Contar vocales -->
+<p>Ejercicio 4: Contar vocales</p>
+Cadena: <input type="text" id="cadena"><br>
+<button onclick="contarVocalesCadena()">Contar Vocales</button>
+<p id="resultadoVocales"></p>
+<hr>
+
+<!-- Ejercicio 5: Palíndromo -->
+<p>Ejercicio 5: Verificar si es palíndromo</p>
+Palabra: <input type="text" id="palabra"><br>
+<button onclick="verificarPalindromo()">Verificar</button>
+<p id="resultadoPalindromo"></p>
+
+<script>
+function potencia(base, exponente) {
+  if (exponente === 0) return 1;
+  return base * potencia(base, exponente - 1);
+}
+
+function calcularPotencia() {
+  let base = parseInt(document.getElementById("base").value);
+  let exponente = parseInt(document.getElementById("exp").value);
+  let resultado = potencia(base, exponente);
+  document.getElementById("resultadoPotencia").innerHTML = base + "^" + exponente + " = " + resultado;
+}
+
+function mcd(numero1, numero2) {
+  if (numero2 === 0) return numero1;
+  return mcd(numero2, numero1 % numero2);
+}
+
+function calcularMCD() {
+  let num1 = parseInt(document.getElementById("num1").value);
+  let num2 = parseInt(document.getElementById("num2").value);
+  let resultado = mcd(num1, num2);
+  document.getElementById("resultadoMCD").innerHTML = "MCD(" + num1 + ", " + num2 + ") = " + resultado;
+}
+
+function sumarArreglo(arreglo, indice) {
+  if (indice < 0) return 0;
+  return arreglo[indice] + sumarArreglo(arreglo, indice - 1);
+}
+
+function calcularSumaArreglo() {
+  let texto = document.getElementById("arreglo").value;
+  let arreglo = texto.split(",").map(Number);
+  let resultado = sumarArreglo(arreglo, arreglo.length - 1);
+  document.getElementById("resultadoArreglo").innerHTML = "Suma: " + resultado;
+}
+
+function contarVocales(cadena, posicion = 0) {
+  if (posicion === cadena.length) return 0;
+  let letra = cadena[posicion].toLowerCase();
+  let esVocal = "aeiou".includes(letra) ? 1 : 0;
+  return esVocal + contarVocales(cadena, posicion + 1);
+}
+
+function contarVocalesCadena() {
+  let cadena = document.getElementById("cadena").value;
+  let resultado = contarVocales(cadena);
+  document.getElementById("resultadoVocales").innerHTML = "Número de vocales: " + resultado;
+}
+
+function esPalindromo(palabra, inicio = 0, fin = null) {
+  if (fin === null) fin = palabra.length - 1;
+  if (inicio >= fin) return true;
+  if (palabra[inicio].toLowerCase() !== palabra[fin].toLowerCase()) return false;
+  return esPalindromo(palabra, inicio + 1, fin - 1);
+}
+
+function verificarPalindromo() {
+  let palabra = document.getElementById("palabra").value;
+  let resultado = esPalindromo(palabra);
+  document.getElementById("resultadoPalindromo").innerHTML =
+    palabra + (resultado ? " es un palíndromo ✅" : " NO es un palíndromo ❌");
+}
+</script>
+
+</body>
+</html>
